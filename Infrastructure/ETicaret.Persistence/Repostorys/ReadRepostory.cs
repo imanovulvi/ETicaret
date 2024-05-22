@@ -41,9 +41,9 @@ namespace ETicaret.Persistence.Repostorys
         public async Task<T> GetSingleAsync(string Id, bool tracker)
         {
             if (!tracker)
-            return await Table.AsNoTracking().SingleOrDefaultAsync(x=>x.Id == Guid.Parse(Id));
+                return await Table.AsNoTracking().SingleOrDefaultAsync(x => x.Id == Guid.Parse(Id));
 
-            return await Table.SingleOrDefaultAsync(x=>x.Id==Guid.Parse(Id));
+            return await Table.SingleOrDefaultAsync(x => x.Id == Guid.Parse(Id));
         }
 
         public IQueryable<T> GetWhere(Expression<Func<T, bool>> expression, bool tracker)

@@ -11,12 +11,12 @@ namespace ETicaret.Application.Repostorys
     {
         Task<bool> AddAsync(T value);
         Task<bool> AddRangeAsync(List<T> values);
-        bool Remove(T value);
+        Task<bool> Remove(string Id);
         bool RemoveRange(List<T> values);
 
         bool Update(T value);
         bool UpdateRange(List<T> values);
-        Task SaveChangeAsync();
+        Task SaveAsync();
 
     }
 }

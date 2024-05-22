@@ -33,10 +33,10 @@ namespace ETicaret.Persistence.Repostorys
             return true;
         }
 
-        public bool Remove(T value)
+        public async Task<bool> Remove(string Id)
         {
-            
-            EntityEntry entityEntry = Table.Remove(value);
+            var entity=await Table.FirstOrDefaultAsync(x => x.Id ==Guid.Parse(Id));
+            EntityEntry entityEntry = Table.Remove(entity);
             return entityEntry.State == EntityState.Deleted;
         }
 
@@ -46,7 +46,7 @@ namespace ETicaret.Persistence.Repostorys
             return true;
         }
 
-        public async Task SaveChangeAsync()
+        public async Task SaveAsync()
         {
            await _context.SaveChangesAsync();
         }
