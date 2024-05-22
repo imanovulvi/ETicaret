@@ -30,7 +30,7 @@ namespace ETicaret.Persistence.Context
                     EntityState.Added => item.Entity.CreateDate = DateTime.UtcNow,
                     EntityState.Modified=>item.Entity.UpdateDate=DateTime.UtcNow
 
-                } ;
+                };
             }
 
             return base.SaveChanges();
