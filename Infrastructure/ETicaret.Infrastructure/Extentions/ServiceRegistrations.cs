@@ -1,5 +1,8 @@
-﻿using ETicaret.Application.Services;
+﻿using ETicaret.Application.Abstractions.Storage;
+using ETicaret.Application.Abstractions.Storage.Local;
+using ETicaret.Application.Services;
 using ETicaret.Infrastructure.Services;
+using ETicaret.Infrastructure.Services.Storage.Local;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +16,7 @@ namespace ETicaret.Infrastructure.Extentions
     {
         public static void AddServiceInfrastructure(this IServiceCollection service) 
         {
-            service.AddScoped(typeof(IFileService), typeof(FileService));
+            service.AddScoped<IStorage, LocalStorage>();
         }
     }
 }

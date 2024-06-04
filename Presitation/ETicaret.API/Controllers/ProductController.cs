@@ -1,4 +1,5 @@
-﻿using ETicaret.Application.ModelViews;
+﻿using ETicaret.Application.Abstractions.Storage;
+using ETicaret.Application.ModelViews;
 
 
 using ETicaret.Application.Repostorys;
@@ -20,21 +21,25 @@ namespace ETicaret.API.Controllers
         
         readonly IProductReadRepostory _productReadRepostory;
         readonly IProductWriteRepostory _productWriteRepostory;
-        readonly IFileService _fileService;
+
+        readonly IStorage _storage;
 
         readonly IFileReadRepostory _fileReadRepostory;
         readonly IFileWriteRepostory _fileWriteRepostory;
+     
+
+
         readonly IProductFileReadRepostory _productFileReadRepostory;
         readonly IProductFileWriteRepostory _productFileWriteRepostory;
 
         readonly IInvoceFileReadRepostory _invoceFileReadRepostory;
         readonly IInvoceFileWriteRepostory _invoceFileWriteRepostory;
 
-        public ProductController(IProductReadRepostory productReadRepostory, IProductWriteRepostory productWriteRepostory, IFileService fileService, IFileReadRepostory fileReadRepostory, IFileWriteRepostory fileWriteRepostory, IProductFileReadRepostory productFileReadRepostory, IProductFileWriteRepostory productFileWriteRepostory, IInvoceFileReadRepostory invoceFileReadRepostory, IInvoceFileWriteRepostory invoceFileWriteRepostory)
+        public ProductController(IProductReadRepostory productReadRepostory, IProductWriteRepostory productWriteRepostory, IStorage storage, IFileReadRepostory fileReadRepostory, IFileWriteRepostory fileWriteRepostory, IProductFileReadRepostory productFileReadRepostory, IProductFileWriteRepostory productFileWriteRepostory, IInvoceFileReadRepostory invoceFileReadRepostory, IInvoceFileWriteRepostory invoceFileWriteRepostory)
         {
             _productReadRepostory = productReadRepostory;
             _productWriteRepostory = productWriteRepostory;
-            _fileService = fileService;
+            _storage = storage;
             _fileReadRepostory = fileReadRepostory;
             _fileWriteRepostory = fileWriteRepostory;
             _productFileReadRepostory = productFileReadRepostory;
@@ -109,14 +114,14 @@ namespace ETicaret.API.Controllers
         public async Task<IActionResult> Upload(IFormFileCollection formFile)
         {
 
-           List<(string path,string name)> filelst= await _fileService.FileUpload(formFile, "Images\\Product");
+           List<(string path,string name)> filelst= await _storage.UploadAsync(formFile, "Images\\Product");
             foreach (var item in filelst)
             {
-                _fileWriteRepostory.AddAsync(new() { Name = item.name, Path = item.path });
+                await _fileWriteRepostory.AddAsync(new() { Name = item.name, Path = item.path });
                 await _fileWriteRepostory.SaveAsync();
             }
          
-            return Ok(filelst);
+            return Ok(new { path=filelst});
 
 
         }
