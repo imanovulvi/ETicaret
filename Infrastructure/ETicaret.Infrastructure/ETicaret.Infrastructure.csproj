@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ETicaret.Application\ETicaret.Application.csproj" />
+  </ItemGroup>
+
 </Project>

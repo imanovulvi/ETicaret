@@ -14,12 +14,24 @@ namespace ETicaret.Persistence.Extention
 {
     public static class ServiceRegistration
     {
-        public static void AddServiceETicaret(this IServiceCollection services,IConfiguration configuration) 
+        public static void AddServicePersistence(this IServiceCollection services,IConfiguration configuration) 
         {
             services.AddDbContext<ETicaretContext>(x => x.UseNpgsql(configuration.GetConnectionString("ETicaretPlSql")));
-            services.AddScoped(typeof(IProductReadRepostory), typeof(ProductReadRepostory));
 
+            services.AddScoped(typeof(IProductReadRepostory), typeof(ProductReadRepostory));
             services.AddScoped(typeof(IProductWriteRepostory), typeof(ProductWriteRepostory));
+
+            services.AddScoped(typeof(IFileReadRepostory), typeof(FileReadRepostory));
+            services.AddScoped(typeof(IFileWriteRepostory), typeof(FileWriteRepostory));
+
+
+            services.AddScoped(typeof(IProductFileReadRepostory), typeof(ProductFileReadRepostory));
+            services.AddScoped(typeof(IProductFileWriteRepostory), typeof(ProductFileWriteRepostory));
+
+
+
+            services.AddScoped(typeof(IInvoceFileReadRepostory), typeof(InvoceFileReadRepostory));
+            services.AddScoped(typeof(IInvoceFileWriteRepostory), typeof(InvoceFileWriteRepostory));
         }
     }
 }

@@ -35,7 +35,7 @@ namespace ETicaret.Persistence.Repostorys
         {
             if (!tracker)
                 return await Table.AsNoTracking().FirstOrDefaultAsync(x=>x.Id==Guid.Parse(Id));
-            return await Table.FirstOrDefaultAsync(x=>x.Id==Guid.Parse(Id));
+            return await Table.FindAsync(Guid.Parse(Id));
         }
 
         public async Task<T> GetSingleAsync(string Id, bool tracker)

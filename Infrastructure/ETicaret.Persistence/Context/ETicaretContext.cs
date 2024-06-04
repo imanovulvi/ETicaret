@@ -15,6 +15,10 @@ namespace ETicaret.Persistence.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
+        public DbSet<Domen.Entitys.File> Files { get; set; }
+        public DbSet<ProductFile> ProductFiles { get; set; }
+        public DbSet<InvoceFile> InvoceFiles { get; set; }
+
         public ETicaretContext(DbContextOptions options) :base(options)
         {
             
@@ -22,13 +26,13 @@ namespace ETicaret.Persistence.Context
 
         public override int SaveChanges()
         {
-            var datas=ChangeTracker.Entries<BaseEntity>();
+            var datas = ChangeTracker.Entries<BaseEntity>();
             foreach (var item in datas)
             {
                 _ = item.State switch
                 {
                     EntityState.Added => item.Entity.CreateDate = DateTime.UtcNow,
-                    EntityState.Modified=>item.Entity.UpdateDate=DateTime.UtcNow
+                    EntityState.Modified => item.Entity.UpdateDate = DateTime.UtcNow
 
                 };
             }

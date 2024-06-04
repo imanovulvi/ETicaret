@@ -16,7 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\ETicaret.Infrastructure\ETicaret.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ETicaret.Persistence\ETicaret.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

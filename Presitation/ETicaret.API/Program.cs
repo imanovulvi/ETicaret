@@ -1,3 +1,4 @@
+using ETicaret.Infrastructure.Extentions;
 using ETicaret.Persistence.Extention;
 namespace ETicaret.API
 {
@@ -8,7 +9,8 @@ namespace ETicaret.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddServiceETicaret(builder.Configuration);
+            builder.Services.AddServicePersistence(builder.Configuration);
+            builder.Services.AddServiceInfrastructure();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +26,7 @@ namespace ETicaret.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
 
 

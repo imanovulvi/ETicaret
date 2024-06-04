@@ -1,0 +1,31 @@
+﻿
+
+@{
+    ViewData["Title"] = "Update";
+}
+@model VM_Product_Update 
+
+<h1>Update</h1>
+
+<form method="post" action="/admin_panel/Product/Update">
+    <input type="hidden"  asp-for="@Model.Id" />
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Name</label>
+        <input type="text" asp-for="@Model.Name" class="form-control" id="exampleFormControlInput1" placeholder="Name">
+
+    </div>
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Price</label>
+        <input type="number" asp-for="@Model.Price" class="form-control" id="exampleFormControlInput1" placeholder="Price">
+    </div>
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Stock</label>
+        <input type="number" asp-for="@Model.Stock" class="form-control" id="exampleFormControlInput1" placeholder="Stock">
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Update" />
+
+</form>
+

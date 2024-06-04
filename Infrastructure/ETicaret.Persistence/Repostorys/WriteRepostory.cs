@@ -54,6 +54,7 @@ namespace ETicaret.Persistence.Repostorys
         public bool Update(T value)
         {
             EntityEntry entityEntry = Table.Update(value);
+         
             return entityEntry.State == EntityState.Modified;
         }
 
