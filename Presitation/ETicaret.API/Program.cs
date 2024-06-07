@@ -28,6 +28,8 @@ namespace ETicaret.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthorization();
+         
+
 
 
             app.MapControllers();

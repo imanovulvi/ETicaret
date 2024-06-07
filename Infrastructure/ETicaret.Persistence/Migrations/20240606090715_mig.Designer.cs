@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ETicaret.Persistence.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20240604073650_mig2")]
-    partial class mig2
+    [Migration("20240606090715_mig")]
+    partial class mig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,9 @@ namespace ETicaret.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("ContanierType")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
@@ -148,6 +151,21 @@ namespace ETicaret.Persistence.Migrations
                     b.ToTable("OrderProduct");
                 });
 
+            modelBuilder.Entity("ProductProductFile", b =>
+                {
+                    b.Property<Guid>("ProductFilesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ProductFilesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("ProductProductFile");
+                });
+
             modelBuilder.Entity("ETicaret.Domen.Entitys.InvoceFile", b =>
                 {
                     b.HasBaseType("ETicaret.Domen.Entitys.File");
@@ -181,6 +199,21 @@ namespace ETicaret.Persistence.Migrations
                     b.HasOne("ETicaret.Domen.Entitys.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ETicaret.Domen.Entitys.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductProductFile", b =>
+                {
+                    b.HasOne("ETicaret.Domen.Entitys.ProductFile", null)
+                        .WithMany()
+                        .HasForeignKey("ProductFilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -27,7 +27,7 @@ namespace ETicaret.Infrastructure.Services.Storage.Local
 
         public async Task<List<(string pathOrContanerName, string name)>> UploadAsync(IFormFileCollection formFiles, string path)
         {
-            string _path=Path.Combine(Directory.GetCurrentDirectory(),"wwwroot",path);
+            string _path=Path.Combine("wwwroot",path);
             if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
 
@@ -35,11 +35,11 @@ namespace ETicaret.Infrastructure.Services.Storage.Local
             foreach (IFormFile item in formFiles)
             {
                 string newFileName = Guid.NewGuid() + Path.GetExtension(item.FileName);
-                string fullpath = Path.Combine(_path, newFileName);
+                string fullpath = Path.Combine(Directory.GetCurrentDirectory(),_path, newFileName);
                await using FileStream fileStream = new(fullpath, FileMode.Create, FileAccess.Write, FileShare.None, (1024 * 1024), true);
                 await item.CopyToAsync(fileStream);
                await fileStream.FlushAsync();
-                fileLst.Add((fullpath, newFileName));
+                fileLst.Add((_path, newFileName));
             }
             return fileLst;
         }

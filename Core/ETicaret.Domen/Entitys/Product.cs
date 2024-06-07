@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace ETicaret.Domen.Entitys
         public int Stock { get; set; }
 
         public ICollection<Order> Orders { get; set; }
+        public List<ProductFile> ProductFiles { get; set; }
 
     }
 }

@@ -1,10 +1,8 @@
 ﻿using ETicaret.Application.Abstractions.Storage;
 using ETicaret.Application.ModelViews;
-
-
 using ETicaret.Application.Repostorys;
-using ETicaret.Application.Services;
 using ETicaret.Domen.Entitys;
+using ETicaret.Domen.Entitys.Enums;
 using ETicaret.Infrastructure.Services;
 using ETicaret.Persistence.Context;
 using Microsoft.AspNetCore.Http;
@@ -111,13 +109,23 @@ namespace ETicaret.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Upload(IFormFileCollection formFile)
+        public async Task<IActionResult> Upload(IFormFileCollection formFile,string ProductId)
         {
+          
+         
+            var product=await _productReadRepostory.GetByIdAsync(ProductId);
 
-           List<(string path,string name)> filelst= await _storage.UploadAsync(formFile, "Images\\Product");
+           List<(string path,string name)> filelst= await _storage.UploadAsync(Request.Form.Files, "Images\\Product");
             foreach (var item in filelst)
             {
-                await _fileWriteRepostory.AddAsync(new() { Name = item.name, Path = item.path });
+                await _fileWriteRepostory.AddAsync(new ProductFile() { 
+                ContanierType=ContainerType.LocalStorage,
+                Name=item.name,
+                Path=item.path,
+                Products=new List<Product> { product }
+
+                });
+
                 await _fileWriteRepostory.SaveAsync();
             }
          
@@ -125,5 +133,9 @@ namespace ETicaret.API.Controllers
 
 
         }
+
+
+
+        
     }
 }

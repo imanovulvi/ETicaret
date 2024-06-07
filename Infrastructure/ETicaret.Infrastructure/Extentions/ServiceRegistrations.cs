@@ -1,6 +1,5 @@
 ﻿using ETicaret.Application.Abstractions.Storage;
 using ETicaret.Application.Abstractions.Storage.Local;
-using ETicaret.Application.Services;
 using ETicaret.Infrastructure.Services;
 using ETicaret.Infrastructure.Services.Storage.Local;
 using Microsoft.Extensions.DependencyInjection;

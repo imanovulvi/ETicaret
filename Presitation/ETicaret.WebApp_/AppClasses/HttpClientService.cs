@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -64,6 +65,34 @@ namespace ETicaret.WebApp_.AppClasses
 
             }
         }
+
+
+        public async Task<bool> PostImageAsync<T>(IFormFileCollection formFiles, string Id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var content = new MultipartFormDataContent();
+
+                foreach (var file in formFiles)
+                {
+
+                    var fileStream = file.OpenReadStream();
+
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                    content.Add(fileContent, "file", file.FileName);
+                }
+
+                var response = await httpClient.PostAsync(url + "/Upload?ProductId=" + Id, content);
+
+                return response.IsSuccessStatusCode;
+
+            }
+        }
+
+
+
+
         public async Task<bool> PutAsync<T>(T Entity)
         {
             using (HttpClient httpClient=new HttpClient())

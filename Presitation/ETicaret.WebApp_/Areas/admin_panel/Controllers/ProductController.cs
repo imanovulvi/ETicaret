@@ -21,10 +21,27 @@ namespace ETicaret.WebApp_.Areas.admin_panel.Controllers
             return View(list);
         }
         [HttpPost]
-        public async Task Post(VM_Product_Create product_Create)
+        public async Task<IActionResult> Post(VM_Product_Create product_Create)
         {
+            if (!ModelState.IsValid)
+            {
+                //todo valudation baxmaq lazimdir
+            }
             await httpClientService.PostAsync(product_Create);
+            return Redirect("/admin_panel/Product/Get");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> PostImages(IFormCollection i,IFormFileCollection productFiles,string Id)
+        {
+             
+           await httpClientService.PostImageAsync<Product>(productFiles, Id);
+
+            //await httpClientService.PostAsync(product_Create);
+            return Redirect("/admin_panel/Product/Get");
+        }
+
+
 
         public async Task Deleted(string Id) 
         {
