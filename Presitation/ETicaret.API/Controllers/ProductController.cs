@@ -5,6 +5,7 @@ using ETicaret.Domen.Entitys;
 using ETicaret.Domen.Entitys.Enums;
 using ETicaret.Infrastructure.Services;
 using ETicaret.Persistence.Context;
+using ETicaret.Persistence.Repostorys;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +52,7 @@ namespace ETicaret.API.Controllers
         {
 
             int count=_productReadRepostory.GetAll(false).Count();
-            var products = _productReadRepostory.GetAll(false).OrderBy(x => x.Price).Skip(((page * size) - size)).Take(size).Select(x => new { x.Id, x.Name, x.Price, x.Stock }).ToList();
+            var products = _productReadRepostory.GetAll(false).OrderBy(x => x.Price).Skip(((page * size) - size)).Take(size).Select(x => new { x.Id, x.Name, x.Price, x.Stock,x.ProductFiles }).ToList();
 
             return Ok(new { count,products});
         }
@@ -135,7 +136,40 @@ namespace ETicaret.API.Controllers
         }
 
 
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetFile(string id)
+        {
 
-        
+            Product? product = await _productReadRepostory.GetAll().Include(x => x.ProductFiles).FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+
+             List<VM_ProductFile_Get> FileList = new List<VM_ProductFile_Get>();
+            foreach (var item in product.ProductFiles)
+            {
+                FileList.Add(new VM_ProductFile_Get { ProductId =product.Id,ProductFileId=item.Id,Name=item.Name,Path=item.Path,Base64= _storage.ConvertBase64(item.Path,item.Name) });
+            }
+
+            return Ok(FileList.Select(x => new {productId=x.ProductId,productFileId=x.ProductFileId,path=x.Path,name=x.Name,base64=x.Base64 } ));
+        }
+
+
+
+        [HttpGet("[action]/{productId}/{fileId}")]
+        public async Task<IActionResult> GetFileRemove(string productId,string fileId)
+        {
+            Product? p= _productReadRepostory.GetAll().Include(x => x.ProductFiles).FirstOrDefault(x=>x.Id==Guid.Parse(productId));
+
+            ProductFile? pf= p.ProductFiles.FirstOrDefault(x => x.Id == Guid.Parse(fileId));
+            if (await _fileWriteRepostory.Remove(pf.Id.ToString()))
+            {
+                await _fileWriteRepostory.SaveAsync();
+                await _storage.DeleteAsync(pf.Path, pf.Name);
+            }
+
+            return Ok();
+        }
+
+
+
+
     }
 }

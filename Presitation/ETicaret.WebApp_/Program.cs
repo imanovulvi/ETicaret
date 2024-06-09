@@ -33,7 +33,7 @@ namespace ETicaret.WebApp_
 
             app.MapControllerRoute(
                name: "defaultWithArea",
-               pattern: "{area=admin_panel}/{controller=Home}/{action=Index}/{id?}");
+               pattern: "{area=admin_panel}/{controller=Home}/{action=Index}/{id?}/{id2?}");
 
             app.Run();
         }

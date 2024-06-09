@@ -13,5 +13,7 @@ namespace ETicaret.Application.Abstractions.Storage
         Task DeleteAsync(string pathOrContanerName, string name);
         List<string> GetFiles(string pathOrContanerName);
         bool HasFile(string pathOrContanerName, string name);
+
+        string ConvertBase64(string pathOrContanerName, string name);
     }
 }

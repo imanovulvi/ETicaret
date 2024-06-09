@@ -1,4 +1,5 @@
 ﻿using ETicaret.Application.Abstractions.Storage.Local;
+using F=ETicaret.Domen.Entitys;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,14 @@ namespace ETicaret.Infrastructure.Services.Storage.Local
 {
     public class LocalStorage : ILocalStorage
     {
+        public string ConvertBase64(string path, string name)
+        {
+            string imagePath = Path.Combine(path, name);
+            byte[] imagesBytes=System.IO.File.ReadAllBytes(imagePath);
+            return $"data:image/jpeg;base64,{Convert.ToBase64String(imagesBytes)}";
+
+        }
+
         public async Task DeleteAsync(string path, string name)
             =>File.Delete($"{path}\\{name}"); 
         

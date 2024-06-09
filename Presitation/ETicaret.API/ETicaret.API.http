@@ -1,6 +1,6 @@
-@ETicaret.API_HostAddress = http://localhost:5207
+@ETicaret.API_HostAddress = http://localhost:5225
 
-GET {{ETicaret.API_HostAddress}}/weatherforecast/
+GET {{ETicaret.API_HostAddress}}/api/Product?page=1&&size=5
 Accept: application/json
 
 ###

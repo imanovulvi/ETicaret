@@ -1,0 +1,447 @@
+﻿@{
+    ViewData["Title"] = "Get";
+}
+
+<h1>Get</h1>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleCreateModal">Create</button>
+
+
+<div id="load" style="display:none;">Loading...</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Create date</th>
+            <th scope="col">Update date</th>
+            <th scope="col">Add Images</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody id="tbody-Product">
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination" id="table-pagination">
+        @* <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li> *@
+    </ul>
+</nav>
+
+
+<!-- Create  -->
+<div class="modal fade" id="exampleCreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" class="form-control c_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Name">
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Price</label>
+                    <input type="number" class="form-control c_price" id="exampleInputPassword1" placeholder="Price">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Stock</label>
+                    <input type="number" class="form-control c_stock" id="exampleInputPassword1" placeholder="Stock">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn_create">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Delete -->
+<div class="modal fade" id="exampleDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you deleted?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn_delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Update -->
+<div class="modal fade" id="exampleUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <input type="hidden" class="form-control u_id">
+
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" class="form-control u_name" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Name">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Price</label>
+                        <input type="number" class="form-control u_price" id="exampleInputPassword1" placeholder="Price">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Stock</label>
+                        <input type="number" class="form-control u_stock" id="exampleInputPassword1" placeholder="Stock">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn_update">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  AddFile -->
+<div class="modal fade" id="exampleAddFilesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="modal-body">
+
+                    <form enctype="multipart/form-data">
+                        <input type="hidden" id="ImagesProductId" name="Id" />
+                        <div class="mb-3">
+                            <label for="ImagesProductId" class="form-label">Small file input example</label>
+                            <input class="form-control form-control-sm" name="productFiles" id="formFile2" type="file" multiple>
+                        </div>
+
+
+                        <button type="button" class="btn btn-primary addFiles">Add Images</button>
+                    </form>
+                    
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+
+
+
+                        <div class="rows" id="show-images"> </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script src="/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+
+       
+
+
+
+        function getData() {
+            $("#load").show();
+            $.ajax({
+                type: "Get",
+                url: "/admin_panel/Product2/GetData",
+                contentType: "json",
+                success: function (data) {
+                    var products = data.products;
+                    var count = data.count;
+                    $("#tbody-Product").html('');
+                    $.each(products, function (index, item) {
+
+                        $('#tbody-Product').append(`
+                                <tr>
+                                <td>${item.name}</td>
+                                         <td>${item.price}</td>
+                                          <td>${item.stock}</td>
+                                     <td>${item.createDate}</td>
+                                    <td>${item.updateDate}</td>
+                                 <td><button type="button" data-id=${item.id} class="btn btn-primary addimages" data-bs-toggle="modal" data-bs-target="#exampleAddFilesModal">Add Images</button></td>
+                                                    <td><button type="button" data-id=${item.id} class="btn btn-primary update" data-bs-toggle="modal" data-bs-target="#exampleUpdateModal">Update</button></td>
+                                            <td><button type="button" data-id=${item.id} class="btn btn-danger delete" data-bs-toggle="modal" data-bs-target="#exampleDeleteModal">Del</button></td>
+                                </tr>
+
+
+
+                                `);
+
+
+                    });
+                    $("#load").hide();
+
+
+
+
+
+
+
+                    // $("#table-pagination").html('');
+                    // var _pagecount = (count % 5 == 0) ? (count / 5) : (count / 5) + 1;
+                    // for (let i = 0; i < _pagecount; i++) {
+
+
+                    //     $('#table-pagination').append('<li class="page-item"><button  type="button" class="page-link" id="idpage" data-page=' + (i + 1) + '>' + (i + 1) + '</button></li>');
+                    // }
+                },
+                error: function () {
+                    alert("Sehvlik askar edildi!!!");
+                    $("#load").hide();
+                }
+
+            });
+        }
+        window.onload = getData;
+
+        // $('#idpage').click(function () {
+        //     alert(ulvi);
+
+        //     // var page = $(this).data('page');
+
+        //     // $.ajax({
+        //     // type:"get",
+        //     // url: "/admin_panel/Product2/GetData?size=5&&page="+page,
+        //     // success: function () {
+        //     //         getData();
+        //     //     }
+
+
+        //     // });
+
+
+        // });
+
+        $(".addFiles").click(function () {
+          
+            
+            if (confirm("elave olunsunmu")) {
+                var fileInput = document.getElementById('formFile2');
+                var id = $(this).data("productid");
+                var files = fileInput.files;
+                var formData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('files[' + i + ']', files[i]);
+
+                }
+                console.log(formData);
+
+                $.ajax({
+                type:"post",
+                    url: "/admin_panel/Product2/AddFiles?id=" + id,
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function ()
+                    {
+                        getFileData(id);
+                    },
+                    error: function () { alert("error!!"); }
+                });
+            }
+
+
+        });
+
+        function getFileData(id)
+        {
+            $.ajax({
+                type: "get",
+                url: "/admin_panel/Product2/GetFiles?id=" + id,
+                success: function (data) {
+
+
+                    $("#show-images").html('');
+                    $.each(data, function (index, item) {
+                        console.log(item);
+                        $('#show-images').append(`
+
+                                 <div class="col-md-4">
+
+
+                           <div class="card" style="width: 10rem;">
+                                  <img src="${item.base64}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                                                        <button data-productid=${item.productId} data-fileid=${item.productFileId} class="btn btn-danger imageRemove">Remove</button>
+                          </div>
+                        </div>
+                                  </div>
+
+                                     `);
+                    });
+                },
+                error: function () {
+                    alert("eroor!!!");
+                }
+
+            });
+
+        }
+
+        $(document).on("click", ".imageRemove", function () {
+
+            var productid = $(this).data("productid");
+            var fileid = $(this).data("fileid");
+            var Isdelete = confirm("do you deleted file?");
+            if (Isdelete) {
+                $.ajax({
+                    type: "get",
+                    url: "/admin_panel/Product2/RemoveFile?productid=" + productid + "&fileid=" + fileid,
+                    success: function () { getFileData(productid) },
+                    error: function () { alert("error"); }
+
+                });
+            }
+        });
+        $(document).on("click", "#tbody-Product .addimages", function () {
+            var productid = $(this).data("id");
+            $(".addFiles").data("productid", productid);
+            getFileData(productid);
+
+        });
+
+
+
+
+
+        $(document).on("click", "#tbody-Product .update", function () {
+
+            $.ajax({
+                type: "Get",
+                contentType: "json",
+                url: "/admin_panel/Product2/Put?id=" + $(this).data("id"),
+                success: function (data) {
+                    $(".u_id").val(data.id);
+                    $(".u_name").val(data.name);
+                    $(".u_price").val(data.price);
+                    $(".u_stock").val(data.stock);
+                },
+                error: function () { alert("eroor!!!") }
+
+
+            });
+
+        });
+
+        $(".btn_update").click(function () {
+            var obj = {
+                id: $(".u_id").val(),
+                name: $(".u_name").val(),
+                price: $(".u_price").val(),
+                stock: $(".u_stock").val()
+
+            };
+            console.log(obj);
+            $.ajax({
+                type: "post",
+                data: obj,
+                url: "/admin_panel/Product2/Put",
+
+                success: function () {
+                    getData();
+                    $("#exampleUpdateModal").modal("hide");
+                },
+                error: function () { alert("error!!!"); }
+
+            });
+
+        });
+
+
+
+        $(".btn_create").click(function () {
+            var product = {
+                name: $(".c_name").val(),
+                price: $(".c_price").val(),
+                stock: $(".c_stock").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "/admin_panel/Product2/Post",
+                data: product,
+                success: function () {
+                    $("#exampleCreateModal").modal("hide");
+                    getData();
+                },
+                error: function () {
+                    alert("Error!!!");
+                }
+
+
+
+            });
+
+        });
+
+        $(document).on("click", "#tbody-Product .delete", function () {
+            var id = $(this).data("id");
+            $(".btn_delete").data("id", id);
+        });
+
+
+        $(".btn_delete").click(function () {
+            $.ajax({
+                type: "post",
+                url: "/admin_panel/Product2/Delete?id=" + $(this).data("id"),
+                success: function () {
+
+                    getData();
+                    $("#exampleDeleteModal").modal("hide");
+
+                },
+                error: function () {
+                    alert("eroor!!!");
+                }
+
+
+
+            });
+
+
+
+        });
+
+    </script>
+
+
+
+
+
+
+}

@@ -15,13 +15,15 @@
             <th>Price</th>
             <th>Stock</th>
             <th>CreateDate</th>
+               
             <th>UpdateDate</th>
+                <th>Add Images</th>
             <th>Update</th>
             <th>Deleted</th>
         </tr>
         
     </thead>
-    <tbody>
+    <tbody id="PoductAjaxId">
         @foreach (Product item in Model.Products)
         {
             <tr>
@@ -46,7 +48,7 @@
                 int count=Model.Count % 5 == 0 ? Model.Count/5 : (Model.Count/5)+1;
                 for (int i = 0; i < count; i++)
                 {
-                                                    <li class="page-item"><a class="page-link pagination" href="/admin_panel/Product/Get?page=@(i+1)&&size=5">@(i + 1)</a></li>
+                                                                                                                                <li class="page-item"><a class="page-link pagination" href="/admin_panel/Product/Get?page=@(i+1)&&size=5">@(i + 1)</a></li>
                 }
            }
             
@@ -166,31 +168,60 @@
      @*  Create *@
      <script>
         $(".create_modal").click(function () { 
-       
+     
             var product = {
            name:$("#name").val(),
                 price:$("#price").val(),
                 stock:$("#stock").val()
             
             };
-            alert(product.name);
+           
             $.ajax({
             type:"post",
             url:"/admin_panel/Product/Post",
             data:product,
-            dataType:"json",
-                success: function (data) 
+                success:function(data) 
                 {
-                 
+                
+                    GetData();
                    // window.location.replace("/admin_panel/Product/Get");
                 },
-                error: function () 
-                {
+                error: function() {
+                    alert("post error");
                     //window.location.replace("/admin_panel/Product/Get");
                 }
             });
         
         });
+
+
+         function GetData() {
+
+            $.ajax({
+                type: "GET",
+                contentType:"json",
+                url: "/admin_panel/Product/Get2",
+                success: function (data) {
+                    $('#exampleModalCreate').hide();
+                    $('.modal-backdrop').hide();
+                    var count = data.count; // count değerini alın
+                    var products = data.products; // products değerini alın
+                    $("#PoductAjaxId").html('');
+
+                    $.each(products, function (index, item) {
+
+                        $("#PoductAjaxId").append('<tr><td>' + item.name + '</td><td>' + item.price + '</td><td>' + item.stock + '</td><td>' + item.createDate + '</td><td>' + item.updateDate + '</td><td><a class="btn btn-primary addImages" data-id=' + item.id + ' role="button" data-bs-toggle="modal" data-bs-target="#exampleModalAddImages">Add Images</a></td><td><a class="btn btn-primary" href="/admin_panel/Product/Update/' + item.id + '" role="button">Update</a></td> <td><a class="btn btn-danger deleted" href="#" data-id='+item.id+' role="button" data-bs-toggle="modal" data-bs-target="#exampleModalDeleted">Del</a></td></tr> '
+                         );
+                    });
+                },
+                error: function (data) { 
+                    alert("get error");
+                    console.log(data); 
+                }
+            });
+
+         }
+
     </script>
 
    @*  Add Images *@
