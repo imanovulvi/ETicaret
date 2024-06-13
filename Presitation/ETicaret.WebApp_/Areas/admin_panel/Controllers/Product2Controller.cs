@@ -17,9 +17,9 @@ namespace ETicaret.WebApp_.Areas.admin_panel.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetData(int page = 1, int size = 5)
+        public async Task<IActionResult> loadData(int page, int size=5)
         {
-            VM_Product_Get list = await httpClientService.GetAsync<VM_Product_Get>(page, size);
+            VM_Product_Get? list = await httpClientService.GetAsync<VM_Product_Get>(page, size);
             return Json(list);
         }
 
@@ -52,25 +52,22 @@ namespace ETicaret.WebApp_.Areas.admin_panel.Controllers
         public async Task AddFiles(string id)
         {
            await httpClientService.PostImageAsync(Request.Form.Files, id);
-         
         }
 
 
         [HttpGet]
-        public async Task<JsonResult> GetFiles(string Id)
+        public async Task<JsonResult> loadFiles(string Id)
         {
 
-            List<VM_ProductFile_Get> a = await httpClientService.GetFileAsync<VM_ProductFile_Get>(Id);
-            return Json(a);
-            //todo gelencekde men bur try cach qoyacam
+            List<VM_File_Get> files = await httpClientService.GetFileAsync<VM_File_Get>(Id);
+            return Json(files);
+           
         }
 
         [HttpGet]
-        public async Task RemoveFile(string productid, string fileid)
+        public async Task RemoveFile(string id, string fileid)
         {
-
-            await httpClientService.GetFileRemoveAsync(productid,fileid);
-            //return Json(a);
+            await httpClientService.GetFileRemoveAsync(id,fileid);
         }
     }
 }

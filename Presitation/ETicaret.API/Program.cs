@@ -2,6 +2,7 @@ using ETicaret.Infrastructure.Extentions;
 using ETicaret.Persistence.Extention;
 namespace ETicaret.API
 {
+    //https://github.com/enesozmus/Shopizer/blob/master/api/WebAPI/Controllers/ProductsController.cs
     public class Program
     {
         public static void Main(string[] args)
@@ -12,6 +13,7 @@ namespace ETicaret.API
             builder.Services.AddServicePersistence(builder.Configuration);
             builder.Services.AddServiceInfrastructure();
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

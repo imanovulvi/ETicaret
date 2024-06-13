@@ -19,6 +19,9 @@ namespace ETicaret.Persistence.Context
         public DbSet<ProductFile> ProductFiles { get; set; }
         public DbSet<InvoceFile> InvoceFiles { get; set; }
 
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
+
         public ETicaretContext(DbContextOptions options) :base(options)
         {
             

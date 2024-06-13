@@ -3,13 +3,8 @@ using ETicaret.Application.ModelViews;
 using ETicaret.Application.Repostorys;
 using ETicaret.Domen.Entitys;
 using ETicaret.Domen.Entitys.Enums;
-using ETicaret.Infrastructure.Services;
-using ETicaret.Persistence.Context;
-using ETicaret.Persistence.Repostorys;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace ETicaret.API.Controllers
 {
@@ -34,8 +29,13 @@ namespace ETicaret.API.Controllers
         readonly IInvoceFileReadRepostory _invoceFileReadRepostory;
         readonly IInvoceFileWriteRepostory _invoceFileWriteRepostory;
 
+
+  
         public ProductController(IProductReadRepostory productReadRepostory, IProductWriteRepostory productWriteRepostory, IStorage storage, IFileReadRepostory fileReadRepostory, IFileWriteRepostory fileWriteRepostory, IProductFileReadRepostory productFileReadRepostory, IProductFileWriteRepostory productFileWriteRepostory, IInvoceFileReadRepostory invoceFileReadRepostory, IInvoceFileWriteRepostory invoceFileWriteRepostory)
         {
+         
+
+
             _productReadRepostory = productReadRepostory;
             _productWriteRepostory = productWriteRepostory;
             _storage = storage;
@@ -142,13 +142,13 @@ namespace ETicaret.API.Controllers
 
             Product? product = await _productReadRepostory.GetAll().Include(x => x.ProductFiles).FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
-             List<VM_ProductFile_Get> FileList = new List<VM_ProductFile_Get>();
+             List<VM_File_Get> FileList = new List<VM_File_Get>();
             foreach (var item in product.ProductFiles)
             {
-                FileList.Add(new VM_ProductFile_Get { ProductId =product.Id,ProductFileId=item.Id,Name=item.Name,Path=item.Path,Base64= _storage.ConvertBase64(item.Path,item.Name) });
+                FileList.Add(new VM_File_Get { Id =product.Id,FileId=item.Id,Name=item.Name,Path=item.Path,Base64= _storage.ConvertBase64(item.Path,item.Name) });
             }
 
-            return Ok(FileList.Select(x => new {productId=x.ProductId,productFileId=x.ProductFileId,path=x.Path,name=x.Name,base64=x.Base64 } ));
+            return Ok(FileList.Select(x => new {Id=x.Id,FileId=x.FileId,path=x.Path,name=x.Name,base64=x.Base64 } ));
         }
 
 

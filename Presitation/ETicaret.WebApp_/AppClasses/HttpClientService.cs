@@ -17,7 +17,7 @@ namespace ETicaret.WebApp_.AppClasses
             else
                 url = requestParametrs.FullEndPoint; 
         }
-        public async Task<T> GetAsync<T>(int page,int size) where T : class
+        public async Task<T?> GetAsync<T>(int page,int size) where T : class
         {
             using (HttpClient httpClient=new HttpClient())
             {
@@ -26,7 +26,7 @@ namespace ETicaret.WebApp_.AppClasses
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(json);
+                    return  JsonConvert.DeserializeObject<T>(json);
 
                 }
                 else

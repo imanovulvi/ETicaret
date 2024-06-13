@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaret.API", "Presitation
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaret.WebApp_", "Presitation\ETicaret.WebApp_\ETicaret.WebApp_.csproj", "{1EE8EDC9-8BE9-4E26-A01B-6A24F3D33612}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatR", "MediatR\MediatR.csproj", "{D669FB73-2775-4739-9402-DFC765B65984}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,14 @@ Global
 		{1EE8EDC9-8BE9-4E26-A01B-6A24F3D33612}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EE8EDC9-8BE9-4E26-A01B-6A24F3D33612}.Release|x64.ActiveCfg = Release|x64
 		{1EE8EDC9-8BE9-4E26-A01B-6A24F3D33612}.Release|x64.Build.0 = Release|x64
+		{D669FB73-2775-4739-9402-DFC765B65984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Debug|x64.Build.0 = Debug|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Release|x64.ActiveCfg = Release|Any CPU
+		{D669FB73-2775-4739-9402-DFC765B65984}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

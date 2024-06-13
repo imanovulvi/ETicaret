@@ -32,6 +32,10 @@ namespace ETicaret.Persistence.Extention
 
             services.AddScoped(typeof(IInvoceFileReadRepostory), typeof(InvoceFileReadRepostory));
             services.AddScoped(typeof(IInvoceFileWriteRepostory), typeof(InvoceFileWriteRepostory));
+
+
+            services.AddScoped(typeof(IAppUserReadRepostary), typeof(AppUserReadRepostary));
+            services.AddScoped(typeof(IAppUserWriteRepostary), typeof(AppUserWriteRepostary));
         }
     }
 }
