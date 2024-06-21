@@ -38,7 +38,7 @@ namespace ETicaret.WebApp_.Areas.admin_panel.Controllers
             {
                 //todo valudation baxmaq lazimdir
             }
-            await httpClientService.PostAsync(product_Create);
+            await httpClientService.PostAsync<VM_Product_Create,object>(product_Create);
             //return Redirect("/admin_panel/Product/Get2");
         }
 

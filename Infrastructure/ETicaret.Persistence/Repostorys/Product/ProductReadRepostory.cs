@@ -1,6 +1,7 @@
 ﻿using ETicaret.Application.Repostorys;
 using ETicaret.Domen.Entitys;
 using ETicaret.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace ETicaret.Persistence.Repostorys
         public ProductReadRepostory(ETicaretContext context) : base(context)
         {
         }
+
     }
 }

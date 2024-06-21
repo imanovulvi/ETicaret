@@ -10,5 +10,6 @@ namespace ETicaret.Domen.Entitys
     public class AppRole:BaseEntity
     {
         public string Role { get; set; }
+        public ICollection<AppUsersAppRole> AppUsersAppRoles { get; set; }
     }
 }

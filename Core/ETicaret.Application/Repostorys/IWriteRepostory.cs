@@ -16,7 +16,6 @@ namespace ETicaret.Application.Repostorys
 
         bool Update(T value);
         bool UpdateRange(List<T> values);
-        Task SaveAsync();
 
     }
 }

@@ -9,5 +9,6 @@ namespace ETicaret.Application.Repostorys
 {
     public interface IProductReadRepostory:IReadRepostory<Product>
     {
+      
     }
 }

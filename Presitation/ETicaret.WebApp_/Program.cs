@@ -1,3 +1,6 @@
+using ETicaret.WebApp_.AppClasses.Extentions;
+using System.Threading.RateLimiting;
+
 namespace ETicaret.WebApp_
 {
     public class Program
@@ -8,10 +11,11 @@ namespace ETicaret.WebApp_
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-           
+           builder.Services.AddHttpContextAccessor();
+            builder.Services.AddServices();
 
             var app = builder.Build();
-
+  
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

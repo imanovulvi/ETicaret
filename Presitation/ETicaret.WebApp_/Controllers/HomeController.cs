@@ -1,3 +1,4 @@
+using ETicaret.WebApp_.AppClasses.Abstraction;
 using ETicaret.WebApp_.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,11 +7,12 @@ namespace ETicaret.WebApp_.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        readonly ICookieGeterated _cookieGeterated;
+        readonly IConfiguration _configuration;
+        public HomeController(ICookieGeterated cookieGeterated, IConfiguration configuration)
         {
-            _logger = logger;
+            _configuration = configuration;
+            _cookieGeterated = cookieGeterated;
         }
 
         public IActionResult Index()
@@ -21,6 +23,12 @@ namespace ETicaret.WebApp_.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult Exit()
+        {
+            _cookieGeterated.DeleteCookie(_configuration["User:CookieKey"]);
+            return Redirect("/Home/Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

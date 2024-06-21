@@ -46,10 +46,6 @@ namespace ETicaret.Persistence.Repostorys
             return true;
         }
 
-        public async Task SaveAsync()
-        {
-           await _context.SaveChangesAsync();
-        }
 
         public bool Update(T value)
         {

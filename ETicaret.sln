@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaret.API", "Presitation
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaret.WebApp_", "Presitation\ETicaret.WebApp_\ETicaret.WebApp_.csproj", "{1EE8EDC9-8BE9-4E26-A01B-6A24F3D33612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatR", "MediatR\MediatR.csproj", "{D669FB73-2775-4739-9402-DFC765B65984}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR", "MediatR\MediatR.csproj", "{D669FB73-2775-4739-9402-DFC765B65984}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

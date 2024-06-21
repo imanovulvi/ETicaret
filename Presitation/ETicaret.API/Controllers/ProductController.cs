@@ -1,8 +1,10 @@
 ﻿using ETicaret.Application.Abstractions.Storage;
 using ETicaret.Application.ModelViews;
 using ETicaret.Application.Repostorys;
+using ETicaret.Application.UnitOfWork;
 using ETicaret.Domen.Entitys;
 using ETicaret.Domen.Entitys.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +12,14 @@ namespace ETicaret.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class ProductController : ControllerBase
     {
-        
+        readonly IUnitOfWork _unitOfWork;
+
         readonly IProductReadRepostory _productReadRepostory;
         readonly IProductWriteRepostory _productWriteRepostory;
+
 
         readonly IStorage _storage;
 
@@ -31,10 +36,9 @@ namespace ETicaret.API.Controllers
 
 
   
-        public ProductController(IProductReadRepostory productReadRepostory, IProductWriteRepostory productWriteRepostory, IStorage storage, IFileReadRepostory fileReadRepostory, IFileWriteRepostory fileWriteRepostory, IProductFileReadRepostory productFileReadRepostory, IProductFileWriteRepostory productFileWriteRepostory, IInvoceFileReadRepostory invoceFileReadRepostory, IInvoceFileWriteRepostory invoceFileWriteRepostory)
+        public ProductController(IUnitOfWork unitOfWork, IProductReadRepostory productReadRepostory, IProductWriteRepostory productWriteRepostory, IStorage storage, IFileReadRepostory fileReadRepostory, IFileWriteRepostory fileWriteRepostory, IProductFileReadRepostory productFileReadRepostory, IProductFileWriteRepostory productFileWriteRepostory, IInvoceFileReadRepostory invoceFileReadRepostory, IInvoceFileWriteRepostory invoceFileWriteRepostory)
         {
-         
-
+            _unitOfWork = unitOfWork;
 
             _productReadRepostory = productReadRepostory;
             _productWriteRepostory = productWriteRepostory;
@@ -51,10 +55,10 @@ namespace ETicaret.API.Controllers
         public IActionResult Get(int page,int size)
         {
 
-            int count=_productReadRepostory.GetAll(false).Count();
-            var products = _productReadRepostory.GetAll(false).OrderBy(x => x.Price).Skip(((page * size) - size)).Take(size).Select(x => new { x.Id, x.Name, x.Price, x.Stock,x.ProductFiles }).ToList();
+            int count = _productReadRepostory.GetAll(false).Count();
+            var products = _productReadRepostory.GetAll(false).OrderBy(x => x.Price).Skip(((page * size) - size)).Take(size).Select(x => new { x.Id, x.Name, x.Price, x.Stock, x.ProductFiles }).ToList();
 
-            return Ok(new { count,products});
+            return Ok(new { count, products });
         }
 
         [HttpGet("{Id}")]
@@ -70,7 +74,7 @@ namespace ETicaret.API.Controllers
             if (ModelState.IsValid)
             {
                 await _productWriteRepostory.AddAsync(product);
-                await _productWriteRepostory.SaveAsync();
+                await _unitOfWork.SaveAsync();
                 return Ok();
             }
            return BadRequest();
@@ -89,7 +93,8 @@ namespace ETicaret.API.Controllers
 
                 _productWriteRepostory.Update(p);
 
-                await _productWriteRepostory.SaveAsync();
+                await _unitOfWork.SaveAsync();
+
                 return Ok();
             }
 
@@ -102,7 +107,7 @@ namespace ETicaret.API.Controllers
             if (Id is not null)
             {
                 await _productWriteRepostory.Remove(Id);
-                await _productWriteRepostory.SaveAsync();
+                await _unitOfWork.SaveAsync();
                 return Ok();
             }
             return NotFound();
@@ -127,7 +132,7 @@ namespace ETicaret.API.Controllers
 
                 });
 
-                await _fileWriteRepostory.SaveAsync();
+                await _unitOfWork.SaveAsync();
             }
          
             return Ok(new { path=filelst});
@@ -161,7 +166,7 @@ namespace ETicaret.API.Controllers
             ProductFile? pf= p.ProductFiles.FirstOrDefault(x => x.Id == Guid.Parse(fileId));
             if (await _fileWriteRepostory.Remove(pf.Id.ToString()))
             {
-                await _fileWriteRepostory.SaveAsync();
+                await _unitOfWork.SaveAsync();
                 await _storage.DeleteAsync(pf.Path, pf.Name);
             }
 

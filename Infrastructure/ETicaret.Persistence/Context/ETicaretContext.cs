@@ -21,10 +21,19 @@ namespace ETicaret.Persistence.Context
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
+        public DbSet<AppUsersAppRole> AppUsersAppRoles { get; set; }
 
         public ETicaretContext(DbContextOptions options) :base(options)
         {
             
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AppUsersAppRole>().HasKey(x=>new { x.AppUserId,x.AppRoleId});
+
+            modelBuilder.Entity<AppUsersAppRole>().HasOne(x=>x.AppUser).WithMany(x=>x.AppUsersAppRoles).HasForeignKey(x=>x.AppUserId);
+            modelBuilder.Entity<AppUsersAppRole>().HasOne(x => x.AppRole).WithMany(x => x.AppUsersAppRoles).HasForeignKey(x => x.AppRoleId);
+            base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges()
