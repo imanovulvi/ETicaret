@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,15 @@ namespace ETicaret.Infrastructure.Services.Token
             _configuration = configuration;
         }
 
-        Application.DTOs.Token ITokenHandler.CreateAccessToken(AppUser appUser)
+        public string CreateRefreshToken()
+        {
+            byte[] bytes = new byte[32];
+            using var random=RandomNumberGenerator.Create();
+            random.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
+        }
+
+        Application.DTOs.Token ITokenHandler.CreateAccessToken(AppUser appUser,DateTime expires)
         {
        
             List<Claim> claims = new List<Claim>()
@@ -32,6 +41,7 @@ namespace ETicaret.Infrastructure.Services.Token
                 
                
             };
+
             foreach (var item in appUser.AppUsersAppRoles)
                 claims.Add(new Claim(ClaimTypes.Role,item.AppRole.Role));
          
@@ -39,7 +49,7 @@ namespace ETicaret.Infrastructure.Services.Token
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["TokenSecurty:securityKey"]));
 
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-                expires: DateTime.UtcNow.AddMinutes(10),
+                expires: expires,
                 notBefore: DateTime.UtcNow,
                 issuer: _configuration["TokenSecurty:issuer"],
                 audience: _configuration["TokenSecurty:audience"],
@@ -49,10 +59,12 @@ namespace ETicaret.Infrastructure.Services.Token
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-            token.AccessToken = tokenHandler.WriteToken(jwtSecurityToken);
-
-
-            return token;
+            return new() {
+                AccessToken = tokenHandler.WriteToken(jwtSecurityToken),
+                AccessTokenExpires = expires,
+                RefreshToken = CreateRefreshToken(),
+                RefreshTokenDateTime = expires.AddSeconds(15)
+            };
 
         }
     }

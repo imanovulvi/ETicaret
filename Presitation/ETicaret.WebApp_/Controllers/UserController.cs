@@ -31,7 +31,11 @@ namespace ETicaret.WebApp_.Controllers
 
             Token token = await httpClientService.PostAsync<VM_AppUser_Login, Token>(userLogin);
             if (token is { })
+            {
                 _cookieGeterated.SetCookie(_configuration["User:CookieKey"], token.AccessToken);
+                _cookieGeterated.SetCookie(_configuration["User:CookieRefreshKey"], token.RefreshToken);
+            }
+               
 
             return RedirectToAction("Index");
         }

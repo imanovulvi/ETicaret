@@ -18,14 +18,15 @@ namespace ETicaret.API
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters() { 
-                ValidateAudience = true,//Hansi sayt istifade edecek
-                ValidateIssuer = true,//Hansi data baylayazaq yeni api
-                ValidateLifetime= true,//token zamanai
-                ValidateIssuerSigningKey = true,//tokene uygun bir key deyer
-                ValidIssuer = builder.Configuration["TokenSecurty:issuer"],
-                    ValidAudience = builder.Configuration["TokenSecurty:audience"],
-                 IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenSecurty:securityKey"]))
+                    options.TokenValidationParameters = new TokenValidationParameters() {
+                        ValidateAudience = true,//Hansi sayt istifade edecek
+                        ValidateIssuer = true,//Hansi data baylayazaq yeni api
+                        ValidateLifetime = true,//token zamanai
+                        ValidateIssuerSigningKey = true,//tokene uygun bir key deyer
+                        ValidIssuer = builder.Configuration["TokenSecurty:issuer"],
+                        ValidAudience = builder.Configuration["TokenSecurty:audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenSecurty:securityKey"])),
+                        LifetimeValidator = (DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters) => expires !=null?expires>DateTime.UtcNow:false
                  
 
 

@@ -1,6 +1,8 @@
 ﻿
+using ETicaret.Application.DTOs;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 
@@ -12,6 +14,25 @@ namespace ETicaret.WebApp_.AppClasses
     {
         private string url;
 
+
+        public async Task<Token> RefreshToken(string refreshToken)
+        {
+            using HttpClient httpClient = new HttpClient();
+
+            var content = new StringContent(JsonConvert.SerializeObject(refreshToken), Encoding.UTF8, "application/json");
+
+            
+
+            HttpResponseMessage response = await httpClient.PostAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Token>(responseContent);
+            }
+
+            return null;
+        }
+
         public HttpClientService(RequestParametrs requestParametrs)
         {
 
@@ -20,6 +41,9 @@ namespace ETicaret.WebApp_.AppClasses
             else
                 url = requestParametrs.FullEndPoint;
         }
+
+
+
         public async Task<T?> GetAsync<T>(int page, int size, string token = null) where T : class
         {
             using HttpClient httpClient = new HttpClient();
@@ -31,18 +55,23 @@ namespace ETicaret.WebApp_.AppClasses
                 httpRequestMessage.Headers.Add("Authorization", $"Bearer {token}");
 
             HttpResponseMessage response = await httpClient.SendAsync(httpRequestMessage);
-            if (response.IsSuccessStatusCode)
+
+            if (response.StatusCode == HttpStatusCode.OK)
             {
                 string json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(json);
 
             }
-            else
-                return null;
-
-
-
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                RefreshToken(token);
+            }
+            return null;
         }
+
+
+
+    
 
 
 
@@ -156,14 +185,14 @@ namespace ETicaret.WebApp_.AppClasses
         {
             using HttpClient httpClient = new HttpClient();
 
-
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            if (token is not null)
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
             HttpResponseMessage response = await httpClient.GetAsync(url + $"/GetFile/{Id}");
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var aa = JsonConvert.DeserializeObject<List<T>>(json);
+              
                 return JsonConvert.DeserializeObject<List<T>>(json);
 
             }
@@ -173,13 +202,13 @@ namespace ETicaret.WebApp_.AppClasses
         }
 
 
-        public async Task<bool> GetFileRemoveAsync(string productid, string fileid, string token = null)
+        public async Task<bool> GetFileRemoveAsync(string id, string fileid, string token = null)
         {
             using HttpClient httpClient = new HttpClient();
+            if (token is not null)
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            HttpResponseMessage response = await httpClient.GetAsync(url + $"/GetFileRemove/{productid}/{fileid}");
+            HttpResponseMessage response = await httpClient.GetAsync(url + $"/GetFileRemove/{id}/{fileid}");
             return response.IsSuccessStatusCode;
 
 

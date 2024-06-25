@@ -51,16 +51,35 @@ namespace ETicaret.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(VM_AppUser_Login userLogin)
         {
-            AppUser user = await _appUserReadRepostary.GetAll(false).Include(x=>x.AppUsersAppRoles).ThenInclude(x=>x.AppRole).FirstOrDefaultAsync(x => x.Name == userLogin.Name && x.Password == userLogin.Password);
+            AppUser? user = await _appUserReadRepostary.GetAll().Include(x=>x.AppUsersAppRoles).ThenInclude(x=>x.AppRole).FirstOrDefaultAsync(x => x.Name == userLogin.Name && x.Password == userLogin.Password);
 
-            if(user is { })
+            if (user is { })
             {
-                Token token=_tokenHandler.CreateAccessToken(user);
+                Token token = _tokenHandler.CreateAccessToken(user, DateTime.UtcNow.AddSeconds(15));
+                user.RefreshToken = token.RefreshToken;
+                user.RefreshTokenDateTime = token.RefreshTokenDateTime;
+                await _unitOfWork.SaveAsync();
                 return Ok(token);
             }
             throw new Exception();
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            AppUser? user = await _appUserReadRepostary.GetAll().Include(x => x.AppUsersAppRoles).ThenInclude(x => x.AppRole).FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+            if (user!=null &&user.RefreshTokenDateTime>DateTime.UtcNow)
+            {
+                Token token = _tokenHandler.CreateAccessToken(user, DateTime.UtcNow.AddSeconds(15));
+                user.RefreshToken = token.RefreshToken;
+                user.RefreshTokenDateTime = token.RefreshTokenDateTime;
+                await _unitOfWork.SaveAsync();
+                return Ok(token);
+            }
+            else
+                throw new Exception();
+        }
+
+
     }
 }

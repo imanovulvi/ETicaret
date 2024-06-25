@@ -10,6 +10,7 @@ namespace ETicaret.Application.Abstractions.Token
 {
     public interface ITokenHandler
     {
-        DTOs.Token CreateAccessToken(AppUser appUser);
+        DTOs.Token CreateAccessToken(AppUser appUser, DateTime expires);
+        string CreateRefreshToken();
     }
 }
